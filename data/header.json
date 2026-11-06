@@ -1,0 +1,90 @@
+
+{
+  "header": {
+    "logo": {
+      "src": "/assets/logo.png",
+      "alt": "ApexBuild Construction Group",
+      "width": 180,
+      "height": 54,
+      "ariaLabel": "Go to homepage"
+    },
+    "brand": {
+      "name": "ApexBuild Construction",
+      "tagline": "Modern Architecture & Structural Engineering"
+    },
+    "helpline": {
+      "label": "24/7 Helpline",
+      "number": "+1 000000000",
+      "href": "tel:+1000000000"
+    },
+    "announcement": {
+      "enabled": true,
+      "badge": "ISO 9001 • LEED PLATINUM",
+      "text": "Booking 2026–2027 Commercial Towers, Bridges & Custom Architectural Estates",
+      "linkText": "Get Instant Quote",
+      "href": "#contact"
+    },
+    "navigation": {
+      "ariaLabel": "Main navigation",
+      "mobileDrawerTitle": "MENU DIRECTORY",
+      "navItems": [
+        {
+          "label": "Home",
+          "href": "#home"
+        },
+        {
+          "label": "About Project",
+          "href": "#about"
+        },
+        {
+          "label": "Amenities",
+          "href": "#amenities"
+        },
+        {
+          "label": "Floor Plan",
+          "href": "#flor-plan"
+        },
+        {
+          "label": "Gallery",
+          "href": "#gallery"
+        },
+        {
+          "label": "Testimonial",
+          "href": "#testimonials"
+        },
+        {
+          "label": "Contact Us",
+          "href": "#contact"
+        }
+      ]
+    },
+    "cta": {
+      "enabled": true,
+      "btnText": "Book a Site Visit",
+      "btnLink": "#contact",
+      "icon": "arrow-up-right"
+    },
+    "mobile": {
+      "menuLabel": "Open navigation menu",
+      "closeLabel": "Close navigation menu",
+      "ctaText": "Contact Now"
+    },
+    "theme": {
+      "background": "rgba(255, 255, 255, 0.88)",
+      "surface": "#FFFFFF",
+      "text": "#0B1120",
+      "muted": "#475569",
+      "accent": "#EA580C",
+      "secondaryAccent": "#1E3A8A",
+      "border": "rgba(30, 58, 138, 0.09)",
+      "scrolledBackground": "rgba(255, 255, 255, 0.97)"
+    },
+    "settings": {
+      "sticky": true,
+      "showAnnouncement": true,
+      "scrollThreshold": 40,
+      "showActiveLink": true,
+      "smoothScroll": true
+    }
+  }
+}
