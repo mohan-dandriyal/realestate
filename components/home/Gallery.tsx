@@ -3,16 +3,17 @@
 import Image from 'next/image'
 import React, { useCallback, useState } from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
-import { ZoomIn } from 'lucide-react'
+import { MoveRight, ZoomIn } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
 import data from '@/data/landing.json' // contains the "amenities" block from amenities.json
 import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
 import GalleryLightbox from "@/components/home/Gallerylightbox"
+import { PrimaryThemeButton } from '../ui/PrimaryButton'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
 function Gallery() {
-    const { eyebrow, title, subtitle, items } = data.gallery;
+    const { eyebrow, title, subtitle, items, cta } = data.gallery;
     const reduce = useReducedMotion()
 
     // index = which image is open (null = popup closed), dir = slide direction
@@ -103,11 +104,16 @@ function Gallery() {
                         </motion.li>
                     ))}
                 </motion.ul>
+
+                <div className='flex justify-center mt-8'>
+                    <PrimaryThemeButton text={cta.label} href={cta.label} className='text-xl' rightIcon ={<MoveRight />} />
+                </div>
+                
             </MainContainer>
 
             {/* ---------- Popup ---------- */}
             <GalleryLightbox
-                items={items}
+                items={items.map((item) => ({ ...item, title: item.alt }))}
                 index={view.index}
                 direction={view.dir}
                 onClose={close}

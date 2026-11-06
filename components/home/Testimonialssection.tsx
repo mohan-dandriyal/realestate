@@ -84,7 +84,7 @@ function TestimonialsSection() {
         <section id='testimonials' className='relative w-full overflow-hidden bg-[#fffaf5] py-16 md:py-18'>
             {/* faint building in the background, top right (optional) */}
             {backgroundImage && (
-                <div className='pointer-events-none absolute right-0 top-0 hidden h-[65%] w-[35%] opacity-[0.12] lg:block' aria-hidden>
+                <div className='pointer-events-none absolute right-0 top-0 hidden h-[350px] w-[45%] opacity-[0.12] lg:block' aria-hidden>
                     <Image src={backgroundImage} alt='' fill sizes='35vw' className='object-contain object-right-top' />
                 </div>
             )}

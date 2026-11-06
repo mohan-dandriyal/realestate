@@ -106,7 +106,7 @@ function AmenitiesSection() {
 
                                 {/* <div className=' a absolute top-0 left-0 w-full h-full bg-black/20 group-hover:opacity-0 duration-300' /> */}
 
-                                <div className='absolute bottom-2 px-3 h-16 w-[95%] bg-white flex items-center justify-center gap-4 rounded-xl '
+                                <div className='absolute bottom-2 px-3 h-16 w-[95%] bg-[#fcf3ed] flex items-center justify-center gap-4 rounded-xl '
                                     style={{
                                         left: "50%",
                                         transform: "translateX(-50%)"

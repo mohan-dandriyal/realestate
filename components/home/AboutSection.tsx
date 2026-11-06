@@ -40,7 +40,7 @@ function AboutSection() {
     const viewport = { once: true, amount: 0.25 }
 
     return (
-        <section id='about' className='relative w-full overflow-hidden bg-[#fffdfb] py-16 md:py-20'>
+        <section id='about' className='relative w-full overflow-hidden bg-[#fffdfb] pt-20 sm:py-20'>
             {/* soft background tint on the left (desktop) */}
             <div className='hidden lg:block absolute top-0 left-0 h-full w-[30%] bg-[#fbf3ec]' aria-hidden />
 

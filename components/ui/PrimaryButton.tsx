@@ -1,12 +1,13 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, ReactNode } from 'react';
 
 
-export const PrimaryThemeButton = ({ text, href, className, Icon }: {
+export const PrimaryThemeButton = ({ text, href, className, Icon, rightIcon }: {
     text: string;
     href?: string;
     className?: string;
     Icon?: React.ComponentType<{ size?: number }>
+    rightIcon?: ReactNode
 }) => {
     const scrollToHash = useCallback((href: string) => {
         if (!href.startsWith("#")) return false;
@@ -40,6 +41,8 @@ export const PrimaryThemeButton = ({ text, href, className, Icon }: {
             }
 
             {text}
+
+            {rightIcon}
         </a>
     );
 }

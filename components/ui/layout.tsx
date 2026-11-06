@@ -1,4 +1,4 @@
-import { ReactNode, type Key } from "react"
+import { ReactNode} from "react"
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 
 interface PropsType {
@@ -32,7 +32,7 @@ export const SectionTitle = ({ children, className }: PropsType) => {
     );
 }
 
-export const SectionEyebrow = ({ children, className = '', align = 'left' }: PropsType) => {
+export const SectionEyebrow = ({ children, className = '', align = 'left' }: PropsType & { align?: 'left' | 'center' }) => {
     const reduce = useReducedMotion()
 
     const fadeUp: Variants = {
