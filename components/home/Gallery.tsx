@@ -106,7 +106,7 @@ function Gallery() {
                 </motion.ul>
 
                 <div className='flex justify-center mt-8'>
-                    <PrimaryThemeButton text={cta.label} href={cta.label} className='text-xl' rightIcon ={<MoveRight />} />
+                    <PrimaryThemeButton text={cta.label} href={cta.href} className='text-xl' rightIcon ={<MoveRight />} />
                 </div>
                 
             </MainContainer>

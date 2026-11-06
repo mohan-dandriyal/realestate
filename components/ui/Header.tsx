@@ -85,7 +85,7 @@ export default function Header() {
     }, []);
 
     const handleNavClick = (
-        e: React.MouseEvent<HTMLAnchorElement>,
+        e: React.MouseEvent<HTMLElement>,
         href: string,
         shouldCloseMenu = false
     ) => {
@@ -347,7 +347,9 @@ export default function Header() {
                                 })}
                             </nav>
 
-                            <div className="mt-5 w-full mx-auto">
+                            <div className="mt-5 w-full mx-auto"  onClick={(e) =>
+                                    handleNavClick(e, cta.btnLink || "#home", true)
+                                }>
                                 {cta.enabled && (
                                     <PrimaryThemeButton
                                         text={cta.btnText}
