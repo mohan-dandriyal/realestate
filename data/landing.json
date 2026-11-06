@@ -110,25 +110,25 @@
       },
       {
         "title": "Landscaped Gardens",
-        "icon": "Gardens",
+        "icon": "gardens",
         "image": "/assets/LandscapedGardens.webp",
         "alt": "Swimming pool with sun loungers"
       },
       {
         "title": "Indoor Games",
-        "icon": "Games",
+        "icon": "games",
         "image": "/assets/IndoorGames.webp",
         "alt": "Gym with treadmills and weight machines"
       },
       {
         "title": "Ample Parking",
-        "icon": "Parking",
+        "icon": "parking",
         "image": "/assets/AmpleParking.webp",
         "alt": "Clubhouse lounge with sofas"
       },
       {
         "title": "24x7 Security",
-        "icon": "Security",
+        "icon": "security",
         "image": "/assets/24/7.webp",
         "alt": "Children's play area with slide"
       }

@@ -1,9 +1,7 @@
 'use client'
 
-import Image from 'next/image'
-import React from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
-import { Building2, Dumbbell, ToyBrick, Waves, type LucideIcon } from 'lucide-react'
+import { Building2, Dumbbell, ToyBrick, Car, ShieldEllipsis, Gamepad2, Leaf, Waves, type LucideIcon } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
 import data from '@/data/landing.json' // contains the "amenities" block from amenities.json
 import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
@@ -14,7 +12,12 @@ const icons: Record<string, LucideIcon> = {
     dumbbell: Dumbbell,
     building: Building2,
     play: ToyBrick,
+    gardens: Leaf,
+    games: Gamepad2,
+    parking: Car,
+    security: ShieldEllipsis,
 }
+
 
 const ease = [0.22, 1, 0.36, 1] as const
 
