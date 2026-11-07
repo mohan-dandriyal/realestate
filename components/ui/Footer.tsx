@@ -71,10 +71,10 @@ function Footer() {
                     initial='hidden'
                     whileInView='show'
                     viewport={{ once: true, amount: 0.15 }}
-                    className='grid grid-cols-1 gap-12 pb-14 pt-8 md:grid-cols-2 xl:grid-cols-[1.25fr_0.85fr_0.85fr_1.2fr] xl:gap-10'
+                    className=' flex flex-wrap justify-between sm:grid grid-cols-1 sm:gap-12 gap-6 pb-14 pt-8 md:grid-cols-2 xl:grid-cols-[1.25fr_0.85fr_0.85fr_1.2fr] xl:gap-10'
                 >
                     {/* ---------- Brand ---------- */}
-                    <motion.div variants={col} className='relative min-w-0'>
+                    <motion.div variants={col} className='relative w-full md:min-w-0'>
                         <div className='flex items-center gap-4'>
                             {brand.logo ? (
                                 <Image src={brand.logo} alt='' width={180} height={45} className=' w-45 sm:w-65 object-contain' />
@@ -94,7 +94,7 @@ function Footer() {
                     </motion.nav>
 
                     {/* ---------- Social ---------- */}
-                    <motion.div variants={col} className={`relative min-w-0 ${divider}`}>
+                    <motion.div variants={col} className={`relative min-w-40 md:min-w-0 ${divider}`}>
                         <Heading bar={bar}>{social.title}</Heading>
                         <LinkList items={social.items} external row={row} />
                     </motion.div>

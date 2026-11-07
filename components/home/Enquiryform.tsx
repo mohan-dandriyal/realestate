@@ -3,6 +3,7 @@
 
 import React, { FormEvent, useState } from 'react'
 import { ArrowRight, Building2, ChevronDown, Layers, Mail, Phone, User } from 'lucide-react'
+import { PrimaryThemeFormButton } from '../ui/PrimaryButton'
 
 type Field = {
     name: string
@@ -115,19 +116,20 @@ function EnquiryForm({ config }: { config: FormConfig }) {
 
             <div className='mt-5'>
 
-                <button
-                    type='submit'
+
+                <PrimaryThemeFormButton
+                    types="submit"
+                    text={loading ? "Sending…" : config.submitLabel}
+                    className="text-sm md:text-xl"
                     disabled={loading}
-                    className='w-full sm:h-14 h-12 mt-2 rounded-xl font-poppins font-semibold text-sm md:text-xl text-[#0b0b0d] bg-gradient-to-b from-[#f5cf63] to-[#d8a02f] shadow-lg flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-wait'
-                >
-                    {loading ? 'Sending…' : <>{config.submitLabel} <ArrowRight size={22} /></>}
-                </button>
+                    rightIcon={!loading && <ArrowRight size={22} />}
+                />
 
                 {
-                    status?.text && 
-                <p role='status' className={`min-h-[22px] mt-3 text-sm font-medium ${status?.ok ? 'text-green-700' : 'text-red-700'}`}>
-                    {status?.text}
-                </p>
+                    status?.text &&
+                    <p role='status' className={`min-h-[22px] mt-3 text-sm font-medium ${status?.ok ? 'text-green-700' : 'text-red-700'}`}>
+                        {status?.text}
+                    </p>
                 }
             </div>
 

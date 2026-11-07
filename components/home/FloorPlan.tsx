@@ -213,7 +213,7 @@ function FloorPlanSection() {
                                 <motion.div 
                                 variants={item} 
                                 className='sm:mt-8 mt-5 flex justify-center lg:justify-start lg:pl-10'>
-                                    <PrimaryThemeButton className='sm:text-lg text-sm'
+                                    <PrimaryThemeButton className='text-sm sm:text-xl'
                                         text={cta.label}
                                         href={cta.href} />
                                 </motion.div>

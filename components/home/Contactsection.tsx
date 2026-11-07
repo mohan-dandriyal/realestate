@@ -9,6 +9,7 @@ import {
 import MainContainer from '../ui/MainContainer'
 import data from '@/data/landing.json' // contains the "contact" block from contact.json
 import { SectionDescription, SectionTitle } from '../ui/layout'
+import { PrimaryThemeFormButton } from '../ui/PrimaryButton'
 
 // icon names used in the JSON -> lucide components
 const icons: Record<string, LucideIcon> = {
@@ -120,7 +121,7 @@ function ContactSection() {
                         </SectionTitle>
 
                         <SectionDescription className=''>
-                        {description}
+                            {description}
                         </SectionDescription>
 
                         <ul className='mt-8 space-y-5'>
@@ -177,7 +178,7 @@ function ContactSection() {
                         {/* <motion.h3 variants={fadeUp} className='font-cormorant font-bold text-3xl sm:text-4xl text-[#14182b]'>
                         </motion.h3> */}
                         <SectionTitle className='mt-0 pt-0'>
-                        {cfg.title}
+                            {cfg.title}
                         </SectionTitle>
                         <motion.div variants={barGrow} className='origin-left mt-2 h-[3px] w-18 bg-[#c9902a]' />
 
@@ -250,24 +251,14 @@ function ContactSection() {
                             })}
 
                             <motion.div variants={fadeUp} className='sm:col-span-2'>
-                                <motion.button
-                                    type='submit'
+                                <PrimaryThemeFormButton
+                                    types="submit"
+                                    text={status === 'loading' ? "Sending…" : cfg.submitLabel}
+                                    className="text-sm sm:text-xl w-full"
                                     disabled={status === 'loading'}
-                                    whileHover={reduce || status === 'loading' ? undefined : { y: -2 }}
-                                    whileTap={reduce ? undefined : { scale: 0.98 }}
-                                    className='group flex h-14 w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-b from-[#f5cf63] to-[#d8a02f] font-poppins text-lg sm:text-xl font-semibold text-[#161616] shadow-lg hover:shadow-xl transition-shadow disabled:opacity-70 disabled:cursor-wait focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c9902a]'
-                                >
-                                    {status === 'loading' ? (
-                                        <>
-                                            <Loader2 size={22} className='animate-spin' /> Sending…
-                                        </>
-                                    ) : (
-                                        <>
-                                            {cfg.submitLabel}
-                                            <ArrowRight size={22} className='transition-transform group-hover:translate-x-1' />
-                                        </>
-                                    )}
-                                </motion.button>
+                                    Icon={status === 'loading' ? Loader2 : undefined}
+                                    rightIcon={status !== 'loading' && <ArrowRight size={22} />}
+                                />
 
                                 <div aria-live='polite'>
                                     <AnimatePresence mode='wait'>
@@ -277,7 +268,7 @@ function ContactSection() {
                                                 initial={{ opacity: 0, y: 8 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0 }}
-                                                className='mt-4 flex items-start gap-2 font-poppins text-base font-medium text-green-700'
+                                                className='mt-4 flex items-start gap-2 font-poppins text-sm font-medium text-green-700'
                                             >
                                                 <CheckCircle2 size={22} className='mt-0.5 shrink-0' /> {cfg.successMessage}
                                             </motion.p>
@@ -288,7 +279,7 @@ function ContactSection() {
                                                 initial={{ opacity: 0, y: 8 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0 }}
-                                                className='mt-4 font-poppins text-base font-medium text-red-600'
+                                                className='mt-4 font-poppins text-sm font-medium text-red-600'
                                             >
                                                 {cfg.errorMessage}
                                             </motion.p>

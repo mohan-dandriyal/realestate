@@ -213,52 +213,53 @@ export default function Header() {
                         })}
                     </nav>
 
-                    {/* Desktop Helpline & CTA */}
-                    <div className="hidden items-center gap-3.5 xl:flex">
+                    <div className="flex items-center gap-5">
+                        {/* Desktop Helpline & CTA */}
+                        <div className="hidden items-center gap-3.5 md:flex">
 
-
-                        {cta.enabled && (
-                            <PrimaryThemeButton
-                                text={cta.btnText}
-                                href={cta.btnLink}
-                                Icon={CalendarDays}
-                                className="" />
-                        )}
-                    </div>
-
-                    {/* Mobile Menu Toggle */}
-
-                    <button
-                        type="button"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label={menuOpen ? mobile.closeLabel : mobile.menuLabel}
-                        aria-expanded={menuOpen}
-                        className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-[#0B1120] shadow-sm transition-colors hover:border-[#EA580C] hover:text-[#EA580C] xl:hidden"
-                    >
-                        <AnimatePresence mode="wait" initial={false}>
-                            {menuOpen ? (
-                                <motion.span
-                                    key="close"
-                                    initial={{ rotate: -90, opacity: 0 }}
-                                    animate={{ rotate: 0, opacity: 1 }}
-                                    exit={{ rotate: 90, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <X size={21} />
-                                </motion.span>
-                            ) : (
-                                <motion.span
-                                    key="menu"
-                                    initial={{ rotate: 90, opacity: 0 }}
-                                    animate={{ rotate: 0, opacity: 1 }}
-                                    exit={{ rotate: -90, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <Menu size={21} />
-                                </motion.span>
+                            {cta.enabled && (
+                                <PrimaryThemeButton
+                                    text={cta.btnText}
+                                    href={cta.btnLink}
+                                    Icon={CalendarDays}
+                                    className="" />
                             )}
-                        </AnimatePresence>
-                    </button>
+                        </div>
+
+                        {/* Mobile Menu Toggle */}
+
+                        <button
+                            type="button"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            aria-label={menuOpen ? mobile.closeLabel : mobile.menuLabel}
+                            aria-expanded={menuOpen}
+                            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-[#0B1120] shadow-sm transition-colors hover:border-[#EA580C] hover:text-[#EA580C] xl:hidden"
+                        >
+                            <AnimatePresence mode="wait" initial={false}>
+                                {menuOpen ? (
+                                    <motion.span
+                                        key="close"
+                                        initial={{ rotate: -90, opacity: 0 }}
+                                        animate={{ rotate: 0, opacity: 1 }}
+                                        exit={{ rotate: 90, opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <X size={21} />
+                                    </motion.span>
+                                ) : (
+                                    <motion.span
+                                        key="menu"
+                                        initial={{ rotate: 90, opacity: 0 }}
+                                        animate={{ rotate: 0, opacity: 1 }}
+                                        exit={{ rotate: -90, opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <Menu size={21} />
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                        </button>
+                    </div>
                 </div>
             </MainContainer>
 
@@ -268,14 +269,14 @@ export default function Header() {
                 {menuOpen && (
                     <>
                         <motion.button
-                                type="button"
-                                aria-label={mobile.closeLabel}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                onClick={closeMenu}
-                                className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-sm xl:hidden"
-                            />
+                            type="button"
+                            aria-label={mobile.closeLabel}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={closeMenu}
+                            className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-sm xl:hidden"
+                        />
 
 
                         <motion.div
@@ -347,9 +348,9 @@ export default function Header() {
                                 })}
                             </nav>
 
-                            <div className="mt-5 w-full mx-auto"  onClick={(e) =>
-                                    handleNavClick(e, cta.btnLink || "#home", true)
-                                }>
+                            <div className="mt-5 w-full mx-auto" onClick={(e) =>
+                                handleNavClick(e, cta.btnLink || "#home", true)
+                            }>
                                 {cta.enabled && (
                                     <PrimaryThemeButton
                                         text={cta.btnText}

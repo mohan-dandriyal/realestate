@@ -122,7 +122,6 @@ function HeroSection() {
 
                             <motion.div className='mt-4'
                                 variants={pop}
-                                whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.97 }}>
                                 <PrimaryThemeButton
                                     text={`${project.cta.label} ${project.cta.amount}`}

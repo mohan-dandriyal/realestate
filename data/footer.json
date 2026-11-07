@@ -33,7 +33,7 @@
       "items": [
         { "icon": "phone", "lines": ["+1 000000000"], "href": "tel:+919876543210" },
         { "icon": "mail", "lines": ["info@xyz.com"], "href": "mailto:info@xyz.com" },
-        { "icon": "pin", "lines": ["Sector 107, Noida, Uttar Pradesh – 201304"], "href": "#" }
+        { "icon": "pin", "lines": ["3170 Rosewood Lane Unit 200, Beverly Hills, CA 90210"], "href": "#" }
       ]
     },
     "copyright": {

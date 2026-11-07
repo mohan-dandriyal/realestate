@@ -1,6 +1,32 @@
 {
+  "meta": {
+    "title": {
+      "default": "Elite Residency | Luxury 2, 3 & 4 BHK Apartments",
+      "template": "%s | Elite Residency"
+    },
+    "description": "Discover Elite Residency, premium 2, 3 & 4 BHK luxury apartments in Sector 76, Gurugram. Explore modern floor plans, world-class amenities and premium residential living. Enquire today!",
+    "keywords": [
+      "Elite Residency",
+      "Luxury Apartments in Gurugram",
+      "2 BHK Flats in Gurugram",
+      "3 BHK Flats in Gurugram",
+      "4 BHK Flats in Gurugram",
+      "Residential Projects in Gurugram",
+      "Luxury Flats in Sector 76",
+      "Premium Apartments",
+      "Real Estate Gurugram",
+      "Luxury Residential Property"
+    ],
+    "authors": [
+      {
+        "name": "Elite Residency"
+      }
+    ],
+    "creator": "Elite Residency",
+    "publisher": "Elite Residency"
+  },
   "hero": {
-    "banner": "/assets/banner.png",
+    "banner": "/assets/banner-1.jpeg",
     "project": {
       "tagline": "PREMIUM RESIDENTIAL APARTMENTS",
       "name": "Elite Residency",
@@ -9,7 +35,7 @@
       "cta": {
         "label": "Starting at",
         "amount": "₹1.25 Cr*",
-        "href" : "#about"
+        "href": "#about"
       }
     },
     "enquiryForm": {
@@ -79,7 +105,7 @@
       }
     }
   },
-   "amenities": {
+  "amenities": {
     "eyebrow": "WORLD-CLASS AMENITIES",
     "title": "Lifestyle Amenities for Modern Living",
     "subtitle": "A perfect blend of comfort, recreation and wellness, offering everything you need for a balanced and luxurious lifestyle.",
@@ -99,7 +125,7 @@
       {
         "title": "Clubhouse",
         "icon": "building",
-        "image": "/assets/clubhouse.webp",
+        "image": "/assets/clubhouse.jpg",
         "alt": "Clubhouse lounge with sofas"
       },
       {
@@ -138,9 +164,9 @@
     "eyebrow": "Our Gallery",
     "title": "Project Gallery",
     "subtitle": "Explore a glimpse of our thoughtfully designed spaces, modern amenities and premium living experience.",
-    "cta" : {
-      "label" : "View More Gallery",
-      "href" : "#contact"
+    "cta": {
+      "label": "View More Gallery",
+      "href": "#contact"
     },
     "items": [
       {
@@ -177,8 +203,8 @@
       }
     ]
   },
- "floorPlans": {
-  "eyebrow": "Floor Plan",
+  "floorPlans": {
+    "eyebrow": "Floor Plan",
     "title": " Choose your Perfect Floor Plan",
     "subtitle": "Thoughtfully designed homes with spacious layouts, modern living and maximum comfort.",
     "titleSuffix": "Floor Plan",
@@ -306,7 +332,7 @@
       }
     ]
   },
-   "testimonials": {
+  "testimonials": {
     "eyebrow": "CLIENT TESTIMONIALS",
     "title": "See What Our Clients Say About Us",
     "subtitle": "Real experiences from our happy homeowners.",
@@ -343,7 +369,7 @@
       }
     ]
   },
-   "contact": {
+  "contact": {
     "eyebrow": "GET IN TOUCH",
     "title": "Enquire About Elite Residency",
     "description": "Have questions or want to know more about floor plans, pricing or availability? Fill out the form and our team will get in touch with you.",
