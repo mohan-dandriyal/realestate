@@ -175,8 +175,6 @@ function ContactSection() {
                         viewport={{ once: true, amount: 0.2 }}
                         className='rounded-[28px] bg-white p-4 sm:p-10 shadow-[0_15px_50px_rgba(120,80,30,0.14)]'
                     >
-                        {/* <motion.h3 variants={fadeUp} className='font-cormorant font-bold text-3xl sm:text-4xl text-[#14182b]'>
-                        </motion.h3> */}
                         <SectionTitle className='mt-0 pt-0'>
                             {cfg.title}
                         </SectionTitle>

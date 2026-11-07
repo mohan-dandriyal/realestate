@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import React, { useCallback, useState } from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
-import { MoveRight, ZoomIn } from 'lucide-react'
+import { ArrowRight, ZoomIn } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
 import data from '@/data/landing.json' // contains the "amenities" block from amenities.json
 import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
@@ -110,7 +110,7 @@ function Gallery() {
                         text={cta.label}
                         href={cta.href}
                         className='text-sm sm:text-xl'
-                        rightIcon={<MoveRight />} />
+                        rightIcon={<ArrowRight />} />
                 </div>
 
             </MainContainer>
