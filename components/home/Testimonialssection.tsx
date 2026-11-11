@@ -307,7 +307,7 @@ export default function TestimonialsSection() {
         </div>
       )}
 
-      <MainContainer>
+      <MainContainer className="">
         {/* =====================================
             SECTION HEADING
         ===================================== */}
@@ -329,7 +329,7 @@ export default function TestimonialsSection() {
           </div>
 
           <div>
-            <SectionTitle>{title}</SectionTitle>
+            <SectionTitle className="">{title}</SectionTitle>
           </div>
 
           <div className="sm:text-center">
