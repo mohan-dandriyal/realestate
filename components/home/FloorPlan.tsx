@@ -110,7 +110,7 @@ function FloorPlanSection() {
                                     tabIndex={isActive ? 0 : -1}
                                     onClick={() => setActiveId(tab.id)}
                                     onKeyDown={(e) => onTabKey(e, i)}
-                                    className='relative flex-1 flex items-center justify-center gap-2 sm:gap-4 py-3 sm:py-5 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#c9902a]'
+                                    className='relative cursor-pointer flex-1 flex items-center justify-center gap-2 sm:gap-4 py-3 sm:py-5 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#c9902a]'
                                 >
                                     {isActive && (
                                         <motion.span

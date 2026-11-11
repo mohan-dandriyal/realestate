@@ -1,235 +1,624 @@
-'use client'
 
-import Image from 'next/image'
-import { useEffect, useState, useSyncExternalStore } from 'react'
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
-import { ArrowLeft, ArrowRight, Star } from 'lucide-react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { A11y, Autoplay, Keyboard } from 'swiper/modules'
-import type { Swiper as SwiperType } from 'swiper'
-import 'swiper/css'
-import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json' // contains the "testimonials" block from testimonials.json
-import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
+"use client";
 
-const ease = [0.22, 1, 0.36, 1] as const
-const subscribeToNothing = () => () => {}
-const getClientSnapshot = () => true
-const getServerSnapshot = () => false
+import Image from "next/image";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import {
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
+import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Autoplay, Keyboard } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 
-// 1 card on phones/tablets, 2 cards from the lg breakpoint (only used to compute the number of dots)
+import "swiper/css";
+
+import MainContainer from "../ui/MainContainer";
+import data from "@/data/landing.json";
+import {
+  SectionDescription,
+  SectionEyebrow,
+  SectionTitle,
+} from "../ui/layout";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const subscribeToNothing = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+// ========================================
+// RESPONSIVE SLIDES PER VIEW
+// ========================================
+
 function usePerView() {
-    const [perView, setPerView] = useState(1)
-    useEffect(() => {
-        const mq = window.matchMedia('(min-width: 1024px)')
-        const update = () => setPerView(mq.matches ? 2 : 1)
-        update()
-        mq.addEventListener('change', update)
-        return () => mq.removeEventListener('change', update)
-    }, [])
-    return perView
+  const [perView, setPerView] = useState(1);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+
+    const update = () => {
+      setPerView(mq.matches ? 2 : 1);
+    };
+
+    update();
+
+    mq.addEventListener("change", update);
+
+    return () => {
+      mq.removeEventListener("change", update);
+    };
+  }, []);
+
+  return perView;
 }
+
+// ========================================
+// ARROW BUTTON COMPONENT
+// ========================================
+
+type ArrowBtnProps = {
+  dir: "prev" | "next";
+  onClick: () => void;
+  disabled?: boolean;
+  className?: string;
+};
 
 const ArrowBtn = ({
-    dir,
-    onClick,
-    className = '',
-}: {
-    dir: 'prev' | 'next'
-    onClick: () => void
-    className?: string
-}) => (
+  dir,
+  onClick,
+  disabled = false,
+  className = "",
+}: ArrowBtnProps) => {
+  const Icon = dir === "prev" ? ArrowLeft : ArrowRight;
+
+  return (
     <motion.button
-        type='button'
-        onClick={onClick}
-        aria-label={dir === 'prev' ? 'Previous testimonial' : 'Next testimonial'}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.92 }}
-        className={`h-12 w-12 sm:h-[52px] sm:w-[52px] items-center justify-center rounded-full border border-[#d79a1e] bg-white text-[#1b1d33] shadow-sm hover:bg-[#fbf3ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c9902a] transition-colors ${className}`}
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={
+        dir === "prev"
+          ? "Previous testimonial"
+          : "Next testimonial"
+      }
+      aria-disabled={disabled}
+      whileHover={disabled ? undefined : { scale: 1.1 }}
+      whileTap={disabled ? undefined : { scale: 0.92 }}
+      transition={{ duration: 0.2 }}
+      className={`
+        h-12 w-12
+        sm:h-[45px] sm:w-[45px]
+        items-center justify-center
+        rounded-full border
+        shadow-sm
+        transition-colors duration-300
+        focus-visible:outline
+        focus-visible:outline-2
+        focus-visible:outline-offset-2
+        focus-visible:outline-[#c9902a]
+        ${
+          disabled
+            ? "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400 opacity-40"
+            : "cursor-pointer border-[#d79a1e] bg-white text-[#1b1d33] hover:bg-[#fbf3ec]"
+        }
+        ${className}
+      `}
     >
-        {dir === 'prev' ? <ArrowLeft size={22} /> : <ArrowRight size={22} />}
+      <Icon size={22} />
     </motion.button>
-)
+  );
+};
 
-function TestimonialsSection() {
-    const { eyebrow, title, subtitle, items, autoplayMs, backgroundImage } = data.testimonials
-    const reduce = useReducedMotion()
-    const perView = usePerView()
+// ========================================
+// TESTIMONIALS SECTION
+// ========================================
 
-    const mounted = useSyncExternalStore(subscribeToNothing, getClientSnapshot, getServerSnapshot)
+export default function TestimonialsSection() {
+  const {
+    eyebrow,
+    title,
+    subtitle,
+    items,
+    autoplayMs,
+    backgroundImage,
+  } = data.testimonials;
 
-    const positions = Math.max(1, items.length - perView + 1) // slides one card at a time
-    const [index, setIndex] = useState(0)
-    const [swiper, setSwiper] = useState<SwiperType | null>(null)
+  const reduce = useReducedMotion();
+  const perView = usePerView();
 
-    const next = () => swiper?.slideNext()
-    const prev = () => swiper?.slidePrev()
+  const mounted = useSyncExternalStore(
+    subscribeToNothing,
+    getClientSnapshot,
+    getServerSnapshot
+  );
 
-    // keep the active dot valid when the layout switches between 1 and 2 cards
-    useEffect(() => {
-        if (swiper && swiper.activeIndex > positions - 1) swiper.slideTo(positions - 1)
-    }, [positions, swiper])
+  // ========================================
+  // SWIPER STATE
+  // ========================================
 
-    const header: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } }
-    const lineGrow: Variants = {
-        hidden: reduce ? {} : { scaleX: 0 },
-        show: { scaleX: 1, transition: { duration: 0.8, ease } },
+  const [swiper, setSwiper] = useState<SwiperType | null>(null);
+  const [index, setIndex] = useState(0);
+
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(
+    items.length <= 1
+  );
+
+  const positions = Math.max(
+    1,
+    items.length - perView + 1
+  );
+
+  // ========================================
+  // UPDATE NAVIGATION
+  // ========================================
+
+  const updateNavigation = useCallback((s: SwiperType) => {
+    if (s.destroyed) return;
+
+    setIndex(s.activeIndex);
+    setIsBeginning(s.isBeginning);
+    setIsEnd(s.isEnd);
+  }, []);
+
+  // ========================================
+  // NEXT / PREVIOUS
+  // ========================================
+
+  const next = useCallback(() => {
+    if (!swiper || swiper.destroyed || swiper.isEnd) return;
+
+    swiper.slideNext();
+  }, [swiper]);
+
+  const prev = useCallback(() => {
+    if (!swiper || swiper.destroyed || swiper.isBeginning) return;
+
+    swiper.slidePrev();
+  }, [swiper]);
+
+  // ========================================
+  // PAGINATION DOT CLICK
+  // ========================================
+
+  const goToSlide = useCallback(
+    (slideIndex: number) => {
+      if (!swiper || swiper.destroyed) return;
+
+      swiper.slideTo(slideIndex);
+    },
+    [swiper]
+  );
+
+  // ========================================
+  // HANDLE RESPONSIVE CHANGES
+  // ========================================
+
+  useEffect(() => {
+    if (!swiper || swiper.destroyed) return;
+
+    const maxIndex = positions - 1;
+
+    if (swiper.activeIndex > maxIndex) {
+      swiper.slideTo(maxIndex);
     }
-    const reveal: Variants = {
-        hidden: reduce ? {} : { opacity: 0, y: 40 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } },
-    }
 
-    return (
-        <section id='testimonials' className='relative w-full overflow-hidden bg-[#fffaf5] py-16 md:py-18'>
-            {/* faint building in the background, top right (optional) */}
-            {backgroundImage && (
-                <div className='pointer-events-none absolute right-0 top-0 hidden h-[350px] w-[45%] opacity-[0.12] lg:block' aria-hidden>
-                    <Image src={backgroundImage} alt='' fill sizes='35vw' className='object-contain object-right-top' />
-                </div>
-            )}
+    // Refresh state after breakpoint changes.
+    const frame = requestAnimationFrame(() => {
+      if (!swiper.destroyed) {
+        updateNavigation(swiper);
+      }
+    });
 
-            <MainContainer className=''>
-                {/* ---------- Heading ---------- */}
-                <motion.div
-                    className='relative sm:text-center max-w-3xl mx-auto'
-                    variants={header}
-                    initial='hidden'
-                    whileInView='show'
-                    viewport={{ once: true, amount: 0.4 }}
-                >
-                    <div className='flex sm:justify-center'>
-                        <SectionEyebrow className='sm:text-right sm:mx-auto'>{eyebrow}</SectionEyebrow>
-                    </div>
-                    <div>
-                        <SectionTitle className=''>{title}</SectionTitle>
-                    </div>
-                    <div className='sm:text-center'>
-                        <SectionDescription className='sm:text-center  sm:mx-auto'>{subtitle}</SectionDescription>
-                    </div>
-                    <motion.div variants={lineGrow} className='sm:mx-auto  sm:mt-5 mt-2 h-[4px] w-24 rounded-full bg-[#c9902a]' />
-                </motion.div>
+    return () => cancelAnimationFrame(frame);
+  }, [swiper, positions, updateNavigation]);
 
-                {/* ---------- Slider ---------- */}
-                <motion.div
-                    variants={reveal}
-                    initial='hidden'
-                    whileInView='show'
-                    viewport={{ once: true, amount: 0.2 }}
-                    className='relative mt-10 md:mt-10 lg:px-20'
-                    // pause autoplay while a card is focused (hover is handled by Swiper's pauseOnMouseEnter)
-                    onFocus={() => swiper?.autoplay?.stop()}
-                    onBlur={() => !reduce && autoplayMs && swiper?.autoplay?.start()}
-                    role='region'
-                    aria-roledescription='carousel'
-                    aria-label='Client testimonials'
-                >
-                    {/* side arrows (desktop) */}
-                    <ArrowBtn dir='prev' onClick={prev} className='hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-10' />
-                    <ArrowBtn dir='next' onClick={next} className='hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-10' />
-                    {
-                        mounted  ? 
-                    <Swiper
-                        modules={[Autoplay, A11y, Keyboard]}
-                        onSwiper={setSwiper}
-                        onSlideChange={(s) => setIndex(s.activeIndex)}
-                        slidesPerView={1}
-                        breakpoints={{ 1024: { slidesPerView: 2 } }}
-                        slidesPerGroup={1}
-                        spaceBetween={0}
-                        speed={reduce ? 0 : 600}
-                        rewind // wraps from last back to first, like the old slider
-                        grabCursor
-                        keyboard={{ enabled: true }}
-                        autoplay={
-                            reduce || !autoplayMs
-                                ? false
-                                : { delay: autoplayMs, disableOnInteraction: false, pauseOnMouseEnter: true }
-                        }
-                        a11y={{ slideLabelMessage: 'Testimonial {{index}} of {{slidesLength}}' }}
-                        className='-my-6 py-6' // room for the card shadow, since Swiper clips overflow
-                    >
-                        {items.map((t, i) => (
-                             <SwiperSlide className='' key={i+1}>
-                                <div className='flex  sm:px-5 sm:py-6 p-3'>
-                                    <article key={i+1} className='relative flex w-full flex-col overflow-hidden rounded-3xl bg-white p-6 sm:p-9 shadow-lg sm:shadow-xl'>
-                                        {/* gold curved corner */}
-                                        <svg
-                                            className='pointer-events-none absolute right-0 top-0 h-20 w-28 sm:h-24 sm:w-36'
-                                            viewBox='0 0 140 100'
-                                            aria-hidden
-                                        >
-                                            <defs>
-                                                <linearGradient id={`corner-${i}`} x1='0' y1='0' x2='1' y2='1'>
-                                                    <stop offset='0%' stopColor='#f5cf63' />
-                                                    <stop offset='100%' stopColor='#c9902a' />
-                                                </linearGradient>
-                                            </defs>
-                                            <path d='M0 0 H140 V100 C128 45 70 6 0 0 Z' fill={`url(#corner-${i})`} />
-                                        </svg>
+  // ========================================
+  // FRAMER MOTION VARIANTS
+  // ========================================
 
-                                        <span aria-hidden className='font-playfair text-7xl sm:text-8xl leading-[0.6] h-8 sm:h-10 text-[#d79a1e] select-none'>
-                                            &ldquo;
-                                        </span>
+  const header: Variants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.12,
+      },
+    },
+  };
 
-                                        <blockquote className='relative mt-3 flex-1 font-poppins text-sm sm:text-base leading-relaxed text-[#1b1d33]'>
-                                            {t.quote}
-                                        </blockquote>
+  const lineGrow: Variants = {
+    hidden: reduce ? {} : { scaleX: 0 },
+    show: {
+      scaleX: 1,
+      transition: {
+        duration: reduce ? 0 : 0.8,
+        ease,
+      },
+    },
+  };
 
-                                        <div className='mt-6 flex items-center gap-4 border-t border-[#efe3d6] pt-5'>
-                                            <div className='relative h-16 w-16 sm:h-16 sm:w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#d79a1e]'>
-                                                <Image src={t.avatar} alt={t.name} fill sizes='70px' className='object-cover' />
-                                            </div>
+  const reveal: Variants = {
+    hidden: reduce
+      ? {}
+      : {
+          opacity: 0,
+          y: 40,
+        },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: reduce ? 0 : 0.8,
+        ease,
+      },
+    },
+  };
 
-                                            <div className='min-w-0 flex-1'>
-                                                <p className='font-poppins font-bold text-lg sm:text-xl text-[#14182b] truncate'>{t.name}</p>
-                                                <p className='font-poppins text-sm sm:text-base tracking-wide text-[#5a5d6e]'>{t.role}</p>
-                                            </div>
+  // ========================================
+  // AUTOPLAY FOCUS HANDLERS
+  // ========================================
 
-                                            <div className='flex gap-0.5 sm:gap-1' aria-label={`${t.rating} out of 5 stars`}>
-                                                {Array.from({ length: 5 }).map((_, s) => (
-                                                    <Star
-                                                        key={s}
-                                                        size={20}
-                                                        className={`h-4 w-4 sm:h-5 sm:w-5 ${s < t.rating ? 'fill-[#f5b800] text-[#f5b800]' : 'text-[#e4d6c4]'}`}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>:
-                      <div className='min-h-[420px]' aria-hidden />
+  const stopAutoplay = () => {
+    if (!swiper || swiper.destroyed) return;
+
+    swiper.autoplay?.stop();
+  };
+
+  const startAutoplay = () => {
+    if (!swiper || swiper.destroyed) return;
+    if (reduce || !autoplayMs || swiper.isEnd) return;
+
+    swiper.autoplay?.start();
+  };
+
+  // ========================================
+  // RENDER
+  // ========================================
+
+  return (
+    <section
+      id="testimonials"
+      className="relative w-full overflow-hidden bg-[#fffaf5] py-16 md:py-18"
+    >
+      {/* =====================================
+          BACKGROUND IMAGE
+      ===================================== */}
+
+      {backgroundImage && (
+        <div
+          className="pointer-events-none absolute right-0 top-0 hidden h-[350px] w-[45%] opacity-[0.12] lg:block"
+          aria-hidden="true"
+        >
+          <Image
+            src={backgroundImage}
+            alt=""
+            fill
+            sizes="35vw"
+            className="object-contain object-right-top"
+          />
+        </div>
+      )}
+
+      <MainContainer>
+        {/* =====================================
+            SECTION HEADING
+        ===================================== */}
+
+        <motion.div
+          className="relative mx-auto max-w-3xl sm:text-center"
+          variants={header}
+          initial="hidden"
+          whileInView="show"
+          viewport={{
+            once: true,
+            amount: 0.4,
+          }}
+        >
+          <div className="flex sm:justify-center">
+            <SectionEyebrow className="sm:mx-auto sm:text-right">
+              {eyebrow}
+            </SectionEyebrow>
+          </div>
+
+          <div>
+            <SectionTitle>{title}</SectionTitle>
+          </div>
+
+          <div className="sm:text-center">
+            <SectionDescription className="sm:mx-auto sm:text-center">
+              {subtitle}
+            </SectionDescription>
+          </div>
+
+          <motion.div
+            variants={lineGrow}
+            className="mt-2 h-[4px] w-24 rounded-full bg-[#c9902a] sm:mx-auto sm:mt-5"
+          />
+        </motion.div>
+
+        {/* =====================================
+            SLIDER WRAPPER
+        ===================================== */}
+
+        <motion.div
+          variants={reveal}
+          initial="hidden"
+          whileInView="show"
+          viewport={{
+            once: true,
+            amount: 0.2,
+          }}
+          className="relative mt-10 lg:px-20"
+          onFocusCapture={stopAutoplay}
+          onBlurCapture={(event) => {
+            if (
+              !event.currentTarget.contains(
+                event.relatedTarget as Node | null
+              )
+            ) {
+              startAutoplay();
+            }
+          }}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Client testimonials"
+        >
+          {/* =====================================
+              DESKTOP NAVIGATION
+          ===================================== */}
+
+          <ArrowBtn
+            dir="prev"
+            onClick={prev}
+            disabled={!swiper || isBeginning}
+            className="absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 lg:flex"
+          />
+
+          <ArrowBtn
+            dir="next"
+            onClick={next}
+            disabled={!swiper || isEnd}
+            className="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 lg:flex"
+          />
+
+          {/* =====================================
+              SWIPER
+          ===================================== */}
+
+          {mounted ? (
+            <Swiper
+              modules={[Autoplay, A11y, Keyboard]}
+              onSwiper={(s) => {
+                setSwiper(s);
+                updateNavigation(s);
+              }}
+              onSlideChange={updateNavigation}
+              onReachBeginning={updateNavigation}
+              onReachEnd={updateNavigation}
+              onBreakpoint={updateNavigation}
+              slidesPerView={1}
+              slidesPerGroup={1}
+              loop={false}
+              rewind={false}
+              watchOverflow={true}
+              breakpoints={{
+                1024: {
+                  slidesPerView: 2,
+                },
+              }}
+              spaceBetween={0}
+              speed={reduce ? 0 : 600}
+              grabCursor={items.length > perView}
+              keyboard={{
+                enabled: true,
+                onlyInViewport: true,
+              }}
+              autoplay={
+                reduce || !autoplayMs || items.length <= perView
+                  ? false
+                  : {
+                      delay: autoplayMs,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
+                      stopOnLastSlide: true,
                     }
+              }
+              a11y={{
+                enabled: true,
+                slideLabelMessage:
+                  "Testimonial {{index}} of {{slidesLength}}",
+              }}
+              className="-my-6 py-6"
+            >
+              {items.map((t, i) => (
+                <SwiperSlide key={i}>
+                  <div className="flex p-3 sm:px-5 sm:py-6">
+                    {/* =========================
+                        TESTIMONIAL CARD
+                    ========================= */}
 
-                    {/* arrows (mobile/tablet) + dots */}
-                    <div className='mt-8 flex items-center justify-center gap-5'>
-                        <ArrowBtn dir='prev' onClick={prev} className='flex lg:hidden' />
+                    <article className="relative flex w-full flex-col overflow-hidden rounded-3xl bg-white p-6 shadow-lg sm:p-9 sm:shadow-xl">
+                      {/* GOLD CORNER */}
 
-                        <div className='flex items-center gap-3'>
-                            {Array.from({ length: positions }).map((_, i) => (
-                                <motion.button
-                                    key={i}
-                                    type='button'
-                                    onClick={() => swiper?.slideTo(i)}
-                                    aria-label={`Go to testimonial ${i + 1}`}
-                                    aria-current={i === index}
-                                    animate={{ scale: i === index ? 1.35 : 1 }}
-                                    className={`h-3 w-3 rounded-full transition-colors duration-300 ${
-                                        i === index ? 'bg-[#c9902a]' : 'bg-[#ecd9bd] hover:bg-[#dcc196]'
-                                    }`}
-                                />
-                            ))}
+                      <svg
+                        className="pointer-events-none absolute right-0 top-0 h-20 w-28 sm:h-24 sm:w-36"
+                        viewBox="0 0 140 100"
+                        aria-hidden="true"
+                      >
+                        <defs>
+                          <linearGradient
+                            id={`corner-${i}`}
+                            x1="0"
+                            y1="0"
+                            x2="1"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor="#f5cf63"
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor="#c9902a"
+                            />
+                          </linearGradient>
+                        </defs>
+
+                        <path
+                          d="M0 0 H140 V100 C128 45 70 6 0 0 Z"
+                          fill={`url(#corner-${i})`}
+                        />
+                      </svg>
+
+                      {/* QUOTE ICON */}
+
+                      <span
+                        aria-hidden="true"
+                        className="font-playfair h-8 select-none text-7xl leading-[0.6] text-[#d79a1e] sm:h-10 sm:text-8xl"
+                      >
+                        &ldquo;
+                      </span>
+
+                      {/* QUOTE TEXT */}
+
+                      <blockquote className="relative mt-3 flex-1 font-poppins text-sm leading-relaxed text-[#1b1d33] sm:text-base">
+                        {t.quote}
+                      </blockquote>
+
+                      {/* CLIENT INFORMATION */}
+
+                      <div className="mt-6 flex items-center gap-4 border-t border-[#efe3d6] pt-5">
+                        {/* AVATAR */}
+
+                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#d79a1e]">
+                          <Image
+                            src={t.avatar}
+                            alt={t.name}
+                            fill
+                            sizes="70px"
+                            className="object-cover"
+                          />
                         </div>
 
-                        <ArrowBtn dir='next' onClick={next} className='flex lg:hidden' />
-                    </div>
-                </motion.div>
-            </MainContainer>
-        </section>
-    )
-}
+                        {/* NAME AND ROLE */}
 
-export default TestimonialsSection
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-poppins text-lg font-bold text-[#14182b] sm:text-xl">
+                            {t.name}
+                          </p>
+
+                          <p className="font-poppins text-sm tracking-wide text-[#5a5d6e] sm:text-base">
+                            {t.role}
+                          </p>
+                        </div>
+
+                        {/* STAR RATING */}
+
+                        <div
+                          className="flex gap-0.5 sm:gap-1"
+                          aria-label={`${t.rating} out of 5 stars`}
+                        >
+                          {Array.from({ length: 5 }).map(
+                            (_, starIndex) => (
+                              <Star
+                                key={starIndex}
+                                size={20}
+                                className={`
+                                  h-4 w-4 sm:h-5 sm:w-5
+                                  ${
+                                    starIndex < t.rating
+                                      ? "fill-[#f5b800] text-[#f5b800]"
+                                      : "text-[#e4d6c4]"
+                                  }
+                                `}
+                              />
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div
+              className="min-h-[420px]"
+              aria-hidden="true"
+            />
+          )}
+
+          {/* =====================================
+              MOBILE NAVIGATION + PAGINATION
+          ===================================== */}
+
+          <div className="mt-8 flex items-center justify-center gap-5">
+            {/* PREVIOUS BUTTON */}
+
+            <ArrowBtn
+              dir="prev"
+              onClick={prev}
+              disabled={!swiper || isBeginning}
+              className="flex lg:hidden"
+            />
+
+            {/* PAGINATION DOTS */}
+
+            <div className="flex items-center gap-3">
+              {Array.from({ length: positions }).map(
+                (_, dotIndex) => {
+                  const active = dotIndex === index;
+
+                  return (
+                    <motion.button
+                      key={dotIndex}
+                      type="button"
+                      onClick={() => goToSlide(dotIndex)}
+                      disabled={!swiper}
+                      aria-label={`Go to testimonial position ${dotIndex + 1}`}
+                      aria-current={
+                        active ? "true" : undefined
+                      }
+                      animate={{
+                        scale: active ? 1.35 : 1,
+                      }}
+                      transition={{
+                        duration: 0.25,
+                      }}
+                      className={`
+                        h-3 w-3 rounded-full
+                        transition-colors duration-300
+                        ${
+                          active
+                            ? "bg-[#c9902a]"
+                            : "bg-[#ecd9bd] hover:bg-[#dcc196]"
+                        }
+                      `}
+                    />
+                  );
+                }
+              )}
+            </div>
+
+            {/* NEXT BUTTON */}
+
+            <ArrowBtn
+              dir="next"
+              onClick={next}
+              disabled={!swiper || isEnd}
+              className="flex lg:hidden"
+            />
+          </div>
+        </motion.div>
+      </MainContainer>
+    </section>
+  );
+}
