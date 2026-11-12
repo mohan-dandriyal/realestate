@@ -92,7 +92,8 @@ function EnquiryForm({ config }: { config: FormConfig }) {
                         <Icon size={22} strokeWidth={1.7} className='absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none' />
                         {f.type === 'select' ? (
                             <>
-                                <select name={f.name} aria-label={f.placeholder} defaultValue='' required={f.required} className={common}>
+                                <select name={f.name} 
+                                aria-label={f.placeholder} defaultValue='' required={f.required} className={common}>
                                     <option value=''>{f.placeholder}</option>
                                     {f.options?.map((o) => (
                                         <option key={o} value={o}>{o}</option>

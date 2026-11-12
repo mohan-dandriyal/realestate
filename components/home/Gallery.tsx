@@ -35,7 +35,7 @@ function Gallery() {
     }
 
     return (
-        <section id='amenities' className='relative w-full overflow-hidden bg-[#fffdfb] py-16 md:py-20'>
+        <section id='amenities' className='relative w-full overflow-hidden bg-[#fffdfb] py-16 md:py-18'>
             <MainContainer className=''>
                 {/* ---------- Heading ---------- */}
                 <motion.div

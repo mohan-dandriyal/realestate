@@ -8,12 +8,19 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+
 import {
   motion,
   useReducedMotion,
   type Variants,
 } from "framer-motion";
-import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+
+import {
+  ArrowLeft,
+  ArrowRight,
+  Star,
+} from "lucide-react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Keyboard } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -22,11 +29,16 @@ import "swiper/css";
 
 import MainContainer from "../ui/MainContainer";
 import data from "@/data/landing.json";
+
 import {
   SectionDescription,
   SectionEyebrow,
   SectionTitle,
 } from "../ui/layout";
+
+// ========================================
+// CONSTANTS
+// ========================================
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -61,7 +73,7 @@ function usePerView() {
 }
 
 // ========================================
-// ARROW BUTTON COMPONENT
+// ARROW BUTTON
 // ========================================
 
 type ArrowBtnProps = {
@@ -69,14 +81,16 @@ type ArrowBtnProps = {
   onClick: () => void;
   disabled?: boolean;
   className?: string;
+  reduceMotion?: boolean | null;
 };
 
-const ArrowBtn = ({
+function ArrowBtn({
   dir,
   onClick,
   disabled = false,
   className = "",
-}: ArrowBtnProps) => {
+  reduceMotion = false,
+}: ArrowBtnProps) {
   const Icon = dir === "prev" ? ArrowLeft : ArrowRight;
 
   return (
@@ -89,18 +103,23 @@ const ArrowBtn = ({
           ? "Previous testimonial"
           : "Next testimonial"
       }
-      aria-disabled={disabled}
-      whileHover={disabled ? undefined : { scale: 1.1 }}
-      whileTap={disabled ? undefined : { scale: 0.92 }}
+      whileHover={
+        disabled || reduceMotion
+          ? undefined
+          : { scale: 1.1 }
+      }
+      whileTap={
+        disabled || reduceMotion
+          ? undefined
+          : { scale: 0.92 }
+      }
       transition={{ duration: 0.2 }}
       className={`
-        h-12 w-12
-        sm:h-[45px] sm:w-[45px]
+        flex h-12 w-12 shrink-0
         items-center justify-center
         rounded-full border
         shadow-sm
         transition-colors duration-300
-        focus-visible:outline
         focus-visible:outline-2
         focus-visible:outline-offset-2
         focus-visible:outline-[#c9902a]
@@ -115,7 +134,7 @@ const ArrowBtn = ({
       <Icon size={22} />
     </motion.button>
   );
-};
+}
 
 // ========================================
 // TESTIMONIALS SECTION
@@ -144,9 +163,11 @@ export default function TestimonialsSection() {
   // SWIPER STATE
   // ========================================
 
-  const [swiper, setSwiper] = useState<SwiperType | null>(null);
-  const [index, setIndex] = useState(0);
+  const [swiper, setSwiper] = useState<SwiperType | null>(
+    null
+  );
 
+  const [index, setIndex] = useState(0);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(
     items.length <= 1
@@ -161,32 +182,43 @@ export default function TestimonialsSection() {
   // UPDATE NAVIGATION
   // ========================================
 
-  const updateNavigation = useCallback((s: SwiperType) => {
-    if (s.destroyed) return;
+  const updateNavigation = useCallback(
+    (s: SwiperType) => {
+      if (s.destroyed) return;
 
-    setIndex(s.activeIndex);
-    setIsBeginning(s.isBeginning);
-    setIsEnd(s.isEnd);
-  }, []);
+      setIndex(s.activeIndex);
+      setIsBeginning(s.isBeginning);
+      setIsEnd(s.isEnd);
+    },
+    []
+  );
 
   // ========================================
   // NEXT / PREVIOUS
   // ========================================
 
   const next = useCallback(() => {
-    if (!swiper || swiper.destroyed || swiper.isEnd) return;
+    if (!swiper || swiper.destroyed || swiper.isEnd) {
+      return;
+    }
 
     swiper.slideNext();
   }, [swiper]);
 
   const prev = useCallback(() => {
-    if (!swiper || swiper.destroyed || swiper.isBeginning) return;
+    if (
+      !swiper ||
+      swiper.destroyed ||
+      swiper.isBeginning
+    ) {
+      return;
+    }
 
     swiper.slidePrev();
   }, [swiper]);
 
   // ========================================
-  // PAGINATION DOT CLICK
+  // PAGINATION
   // ========================================
 
   const goToSlide = useCallback(
@@ -199,7 +231,7 @@ export default function TestimonialsSection() {
   );
 
   // ========================================
-  // HANDLE RESPONSIVE CHANGES
+  // RESPONSIVE UPDATE
   // ========================================
 
   useEffect(() => {
@@ -211,9 +243,9 @@ export default function TestimonialsSection() {
       swiper.slideTo(maxIndex);
     }
 
-    // Refresh state after breakpoint changes.
     const frame = requestAnimationFrame(() => {
       if (!swiper.destroyed) {
+        swiper.update();
         updateNavigation(swiper);
       }
     });
@@ -222,20 +254,22 @@ export default function TestimonialsSection() {
   }, [swiper, positions, updateNavigation]);
 
   // ========================================
-  // FRAMER MOTION VARIANTS
+  // FRAMER MOTION
   // ========================================
 
   const header: Variants = {
     hidden: {},
     show: {
       transition: {
-        staggerChildren: 0.12,
+        staggerChildren: reduce ? 0 : 0.12,
       },
     },
   };
 
   const lineGrow: Variants = {
-    hidden: reduce ? {} : { scaleX: 0 },
+    hidden: {
+      scaleX: reduce ? 1 : 0,
+    },
     show: {
       scaleX: 1,
       transition: {
@@ -263,7 +297,7 @@ export default function TestimonialsSection() {
   };
 
   // ========================================
-  // AUTOPLAY FOCUS HANDLERS
+  // AUTOPLAY
   // ========================================
 
   const stopAutoplay = () => {
@@ -274,7 +308,14 @@ export default function TestimonialsSection() {
 
   const startAutoplay = () => {
     if (!swiper || swiper.destroyed) return;
-    if (reduce || !autoplayMs || swiper.isEnd) return;
+
+    if (
+      reduce ||
+      !autoplayMs ||
+      swiper.isEnd
+    ) {
+      return;
+    }
 
     swiper.autoplay?.start();
   };
@@ -286,11 +327,9 @@ export default function TestimonialsSection() {
   return (
     <section
       id="testimonials"
-      className="relative w-full overflow-hidden bg-[#fffaf5] py-16 md:py-18"
+      className="relative w-full overflow-hidden bg-[#fffaf5] pb-16 pt-16 sm:pb-20"
     >
-      {/* =====================================
-          BACKGROUND IMAGE
-      ===================================== */}
+      {/* BACKGROUND IMAGE */}
 
       {backgroundImage && (
         <div
@@ -307,9 +346,9 @@ export default function TestimonialsSection() {
         </div>
       )}
 
-      <MainContainer className="">
+      <MainContainer>
         {/* =====================================
-            SECTION HEADING
+            SECTION HEADER
         ===================================== */}
 
         <motion.div
@@ -323,24 +362,20 @@ export default function TestimonialsSection() {
           }}
         >
           <div className="flex sm:justify-center">
-            <SectionEyebrow className="sm:mx-auto sm:text-right">
+            <SectionEyebrow className="sm:mx-auto">
               {eyebrow}
             </SectionEyebrow>
           </div>
 
-          <div>
-            <SectionTitle className="">{title}</SectionTitle>
-          </div>
+          <SectionTitle>{title}</SectionTitle>
 
-          <div className="sm:text-center">
-            <SectionDescription className="sm:mx-auto sm:text-center">
-              {subtitle}
-            </SectionDescription>
-          </div>
+          <SectionDescription className="sm:mx-auto sm:text-center">
+            {subtitle}
+          </SectionDescription>
 
           <motion.div
             variants={lineGrow}
-            className="mt-2 h-[4px] w-24 rounded-full bg-[#c9902a] sm:mx-auto sm:mt-5"
+            className="mt-5 h-1 w-24 origin-left rounded-full bg-[#c9902a] sm:mx-auto"
           />
         </motion.div>
 
@@ -356,7 +391,7 @@ export default function TestimonialsSection() {
             once: true,
             amount: 0.2,
           }}
-          className="relative mt-10 lg:px-20"
+          className="relative mt-3 lg:px-20"
           onFocusCapture={stopAutoplay}
           onBlurCapture={(event) => {
             if (
@@ -371,21 +406,23 @@ export default function TestimonialsSection() {
           aria-roledescription="carousel"
           aria-label="Client testimonials"
         >
-          {/* =====================================
-              DESKTOP NAVIGATION
-          ===================================== */}
+          {/* DESKTOP PREVIOUS */}
 
           <ArrowBtn
             dir="prev"
             onClick={prev}
             disabled={!swiper || isBeginning}
+            reduceMotion={reduce}
             className="absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 lg:flex"
           />
+
+          {/* DESKTOP NEXT */}
 
           <ArrowBtn
             dir="next"
             onClick={next}
             disabled={!swiper || isEnd}
+            reduceMotion={reduce}
             className="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 lg:flex"
           />
 
@@ -406,6 +443,7 @@ export default function TestimonialsSection() {
               onBreakpoint={updateNavigation}
               slidesPerView={1}
               slidesPerGroup={1}
+              autoHeight={false}
               loop={false}
               rewind={false}
               watchOverflow={true}
@@ -422,7 +460,9 @@ export default function TestimonialsSection() {
                 onlyInViewport: true,
               }}
               autoplay={
-                reduce || !autoplayMs || items.length <= perView
+                reduce ||
+                !autoplayMs ||
+                items.length <= perView
                   ? false
                   : {
                       delay: autoplayMs,
@@ -436,16 +476,31 @@ export default function TestimonialsSection() {
                 slideLabelMessage:
                   "Testimonial {{index}} of {{slidesLength}}",
               }}
-              className="-my-6 py-6"
+              className="testimonial-swiper !py-6"
             >
               {items.map((t, i) => (
-                <SwiperSlide key={i}>
-                  <div className="flex p-3 sm:px-5 sm:py-6">
-                    {/* =========================
-                        TESTIMONIAL CARD
-                    ========================= */}
+                <SwiperSlide
+                  key={i}
+                  className="!flex !h-auto"
+                >
+                  {/* =====================================
+                      EQUAL HEIGHT WRAPPER
+                  ===================================== */}
 
-                    <article className="relative flex w-full flex-col overflow-hidden rounded-3xl bg-white p-6 shadow-lg sm:p-9 sm:shadow-xl">
+                  <div className="flex w-full flex-1 p-3 sm:px-5 sm:py-6">
+                    {/* =====================================
+                        TESTIMONIAL CARD
+                    ===================================== */}
+
+                    <article
+                      className="
+                        relative flex h-full w-full flex-1
+                        flex-col overflow-hidden
+                        rounded-3xl bg-white
+                        p-6 shadow-lg
+                        sm:p-9 sm:shadow-xl
+                      "
+                    >
                       {/* GOLD CORNER */}
 
                       <svg
@@ -487,31 +542,48 @@ export default function TestimonialsSection() {
                         &ldquo;
                       </span>
 
-                      {/* QUOTE TEXT */}
+                      {/* =====================================
+                          QUOTE TEXT - FLEX GROW
+                      ===================================== */}
 
-                      <blockquote className="relative mt-3 flex-1 font-poppins text-sm leading-relaxed text-[#1b1d33] sm:text-base">
+                      <blockquote
+                        className="
+                          relative mt-3 flex-1
+                          font-poppins text-sm
+                          leading-relaxed text-[#1b1d33]
+                          sm:text-base
+                        "
+                      >
                         {t.quote}
                       </blockquote>
 
-                      {/* CLIENT INFORMATION */}
+                      {/* =====================================
+                          CLIENT INFO - BOTTOM ALIGNED
+                      ===================================== */}
 
-                      <div className="mt-6 flex items-center gap-4 border-t border-[#efe3d6] pt-5">
+                      <div
+                        className="
+                           flex items-center gap-3
+                          border-t border-[#efe3d6]
+                          pt-5 sm:gap-4 mt-5
+                        "
+                      >
                         {/* AVATAR */}
 
-                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#d79a1e]">
+                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-[#d79a1e] sm:h-16 sm:w-16">
                           <Image
                             src={t.avatar}
                             alt={t.name}
                             fill
-                            sizes="70px"
+                            sizes="64px"
                             className="object-cover"
                           />
                         </div>
 
-                        {/* NAME AND ROLE */}
+                        {/* NAME + ROLE */}
 
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-poppins text-lg font-bold text-[#14182b] sm:text-xl">
+                          <p className="font-poppins text-base font-bold text-[#14182b] sm:text-xl">
                             {t.name}
                           </p>
 
@@ -523,25 +595,25 @@ export default function TestimonialsSection() {
                         {/* STAR RATING */}
 
                         <div
-                          className="flex gap-0.5 sm:gap-1"
+                          className="flex shrink-0 gap-0.5 sm:gap-1"
                           aria-label={`${t.rating} out of 5 stars`}
                         >
-                          {Array.from({ length: 5 }).map(
-                            (_, starIndex) => (
-                              <Star
-                                key={starIndex}
-                                size={20}
-                                className={`
-                                  h-4 w-4 sm:h-5 sm:w-5
-                                  ${
-                                    starIndex < t.rating
-                                      ? "fill-[#f5b800] text-[#f5b800]"
-                                      : "text-[#e4d6c4]"
-                                  }
-                                `}
-                              />
-                            )
-                          )}
+                          {Array.from({
+                            length: 5,
+                          }).map((_, starIndex) => (
+                            <Star
+                              key={starIndex}
+                              size={20}
+                              className={`
+                                h-4 w-4 sm:h-5 sm:w-5
+                                ${
+                                  starIndex < t.rating
+                                    ? "fill-[#f5b800] text-[#f5b800]"
+                                    : "text-[#e4d6c4]"
+                                }
+                              `}
+                            />
+                          ))}
                         </div>
                       </div>
                     </article>
@@ -557,64 +629,68 @@ export default function TestimonialsSection() {
           )}
 
           {/* =====================================
-              MOBILE NAVIGATION + PAGINATION
+              NAVIGATION + PAGINATION
           ===================================== */}
 
           <div className="mt-8 flex items-center justify-center gap-5">
-            {/* PREVIOUS BUTTON */}
+            {/* MOBILE PREVIOUS */}
 
             <ArrowBtn
               dir="prev"
               onClick={prev}
               disabled={!swiper || isBeginning}
-              className="flex lg:hidden"
+              reduceMotion={reduce}
+              className="lg:hidden"
             />
 
             {/* PAGINATION DOTS */}
 
             <div className="flex items-center gap-3">
-              {Array.from({ length: positions }).map(
-                (_, dotIndex) => {
-                  const active = dotIndex === index;
+              {Array.from({
+                length: positions,
+              }).map((_, dotIndex) => {
+                const active = dotIndex === index;
 
-                  return (
-                    <motion.button
-                      key={dotIndex}
-                      type="button"
-                      onClick={() => goToSlide(dotIndex)}
-                      disabled={!swiper}
-                      aria-label={`Go to testimonial position ${dotIndex + 1}`}
-                      aria-current={
-                        active ? "true" : undefined
+                return (
+                  <motion.button
+                    key={dotIndex}
+                    type="button"
+                    onClick={() =>
+                      goToSlide(dotIndex)
+                    }
+                    disabled={!swiper}
+                    aria-label={`Go to testimonial position ${dotIndex + 1}`}
+                    aria-current={
+                      active ? "true" : undefined
+                    }
+                    animate={{
+                      scale: active ? 1.35 : 1,
+                    }}
+                    transition={{
+                      duration: reduce ? 0 : 0.25,
+                    }}
+                    className={`
+                      h-3 w-3 rounded-full
+                      transition-colors duration-300
+                      ${
+                        active
+                          ? "bg-[#c9902a]"
+                          : "bg-[#ecd9bd] hover:bg-[#dcc196]"
                       }
-                      animate={{
-                        scale: active ? 1.35 : 1,
-                      }}
-                      transition={{
-                        duration: 0.25,
-                      }}
-                      className={`
-                        h-3 w-3 rounded-full
-                        transition-colors duration-300
-                        ${
-                          active
-                            ? "bg-[#c9902a]"
-                            : "bg-[#ecd9bd] hover:bg-[#dcc196]"
-                        }
-                      `}
-                    />
-                  );
-                }
-              )}
+                    `}
+                  />
+                );
+              })}
             </div>
 
-            {/* NEXT BUTTON */}
+            {/* MOBILE NEXT */}
 
             <ArrowBtn
               dir="next"
               onClick={next}
               disabled={!swiper || isEnd}
-              className="flex lg:hidden"
+              reduceMotion={reduce}
+              className="lg:hidden"
             />
           </div>
         </motion.div>

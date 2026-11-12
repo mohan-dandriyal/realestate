@@ -74,7 +74,7 @@
         {
           "name": "config",
           "type": "select",
-          "placeholder": "Select Configuration (2/3/4 BHK)",
+          "placeholder": "Select (2/3/4 BHK)",
           "icon": "layers",
           "required": true,
           "options": [

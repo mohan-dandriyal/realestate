@@ -1,6 +1,7 @@
 {
   "footer": {
     "brand": {
+      "href" : "#home",
       "logo": "/assets/logo.png",
       "name": "Elite Residency",
       "by": "BY ABC DEVELOPERS",

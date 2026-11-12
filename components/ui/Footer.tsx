@@ -75,13 +75,13 @@ function Footer() {
                 >
                     {/* ---------- Brand ---------- */}
                     <motion.div variants={col} className='relative w-full md:min-w-0'>
-                        <div className='flex items-center gap-4'>
+                        <a href={brand.href} className='flex items-center gap-4'>
                             {brand.logo ? (
                                 <Image src={brand.logo} alt='' width={180} height={45} className=' w-45 sm:w-65 object-contain' />
                             ) : (
                                 <Building2 size={64} strokeWidth={1.4} className='text-[#c9780f]' />
                             )}
-                        </div>
+                        </a>
                         <motion.p variants={row} className='mt-7 max-w-[34ch] font-poppins text-sm sm:text-lg leading-relaxed text-[#000000c7]/90 font-medium'>
                             {brand.description}
                         </motion.p>
