@@ -346,7 +346,7 @@ export default function TestimonialsSection() {
         </div>
       )}
 
-      <MainContainer>
+      <MainContainer className="">
         {/* =====================================
             SECTION HEADER
         ===================================== */}
@@ -367,7 +367,7 @@ export default function TestimonialsSection() {
             </SectionEyebrow>
           </div>
 
-          <SectionTitle>{title}</SectionTitle>
+          <SectionTitle className="">{title}</SectionTitle>
 
           <SectionDescription className="sm:mx-auto sm:text-center">
             {subtitle}
