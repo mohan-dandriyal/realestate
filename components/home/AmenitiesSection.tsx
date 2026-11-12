@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { Building2, Dumbbell, ToyBrick, Car, ShieldEllipsis, Gamepad2, Leaf, Waves, type LucideIcon } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json' // contains the "amenities" block from amenities.json
+import { landingData as data } from "@/types/templates.types";
 import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
 
 // Icon names used in the JSON -> lucide components. Add more here when you add amenities.

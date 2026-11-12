@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/ui/Header";
 
-import { meta } from "@/data/landing.json"
+import { landingData } from "@/types/templates.types";
+const { meta } = landingData;
 import Footer from "@/components/ui/Footer";
 
 import { cormorant, geistMono, geistSans, montserrat, playfair, poppins } from "@/fonts/fonts";

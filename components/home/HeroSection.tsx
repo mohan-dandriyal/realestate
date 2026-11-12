@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { MapPin } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json'
+import { landingData as data } from "@/types/templates.types";
 import EnquiryForm from './Enquiryform';
 import { PrimaryThemeButton } from '../ui/PrimaryButton';
 

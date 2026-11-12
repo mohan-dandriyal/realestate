@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json' // contains the "about" block from about.json
+import { landingData as data } from "@/types/templates.types";
 import { SectionDescription, SectionSubTitle, SectionTitle } from '../ui/layout'
 
 const ease = [0.22, 1, 0.36, 1] as const

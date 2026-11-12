@@ -5,7 +5,7 @@ import React from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { ArrowRight, ArrowUp, Building2, Mail, MapPin, Phone, type LucideIcon } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/footer.json' // contains the "footer" block from footer.json
+import { footerData as data } from "@/types/templates.types";
 
 const icons: Record<string, LucideIcon> = { phone: Phone, mail: Mail, pin: MapPin }
 const ease = [0.22, 1, 0.36, 1] as const

@@ -18,15 +18,15 @@ export default function Home() {
           <AboutSection />
         </div>
 
-        <div id="amenities">
+        <div>
           <AmenitiesSection />
         </div>
 
-        <div id="flor-plan">
+        <div>
           <FlorePlan />
         </div>
 
-         <div id="gallery">
+         <div>
           <Gallery />
         </div>
 

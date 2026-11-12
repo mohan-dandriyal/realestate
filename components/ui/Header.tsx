@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, CalendarDays, Menu, Phone, X } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Menu, X } from "lucide-react";
 
-import { headerData } from "@/types/landingData";
+import { headerData } from "@/types/templates.types";
 
 
 import MainContainer from "./MainContainer";

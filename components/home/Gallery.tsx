@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { ArrowRight, ZoomIn } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json' // contains the "amenities" block from amenities.json
+import { landingData as data } from "@/types/templates.types";
 import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
 import GalleryLightbox from "@/components/home/Gallerylightbox"
 import { PrimaryThemeButton } from '../ui/PrimaryButton'
@@ -35,7 +35,7 @@ function Gallery() {
     }
 
     return (
-        <section id='amenities' className='relative w-full overflow-hidden bg-[#fffdfb] py-16 md:py-18'>
+        <section id='gallery' className='relative w-full overflow-hidden bg-[#fffdfb] py-16 md:py-18'>
             <MainContainer className=''>
                 {/* ---------- Heading ---------- */}
                 <motion.div

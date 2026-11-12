@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion, type PanInfo } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
@@ -17,15 +17,18 @@ type Props = {
 }
 
 const ease = [0.22, 1, 0.36, 1] as const
+const subscribe = () => () => {}
+const getClientSnapshot = () => true
+const getServerSnapshot = () => false
 
 function GalleryLightbox({ items, index, direction, onClose, onNavigate }: Props) {
     const reduce = useReducedMotion()
-    const [mounted, setMounted] = useState(false)
+    const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
     const closeRef = useRef<HTMLButtonElement>(null)
     const open = index !== null
     const total = items.length
 
-    useEffect(() => setMounted(true), [])
+
 
     const go = useCallback(
         (delta: number) => {

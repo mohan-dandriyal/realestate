@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion'
 import { ArrowRight, Bath, BedDouble, Building2, Fence, type LucideIcon } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json' // contains the "floorPlans" block from floorplans.json
+import { landingData as data } from "@/types/templates.types";
 import { SectionDescription, SectionEyebrow, SectionTitle } from '../ui/layout'
 import { PrimaryThemeButton } from '../ui/PrimaryButton'
 

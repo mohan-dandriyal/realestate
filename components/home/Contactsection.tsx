@@ -7,7 +7,7 @@ import {
     Mail, MapPin, MessageSquare, Phone, User, type LucideIcon,
 } from 'lucide-react'
 import MainContainer from '../ui/MainContainer'
-import data from '@/data/landing.json' // contains the "contact" block from contact.json
+import { landingData as data } from "@/types/templates.types";
 import { SectionDescription, SectionTitle } from '../ui/layout'
 import { PrimaryThemeFormButton } from '../ui/PrimaryButton'
 

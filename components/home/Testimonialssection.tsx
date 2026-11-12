@@ -28,7 +28,7 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 
 import MainContainer from "../ui/MainContainer";
-import data from "@/data/landing.json";
+import { landingData as data } from "@/types/templates.types";
 
 import {
   SectionDescription,
