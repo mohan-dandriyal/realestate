@@ -203,7 +203,7 @@
                 "ctaText": "Contact Now"
               },
               "theme": {
-                "background": "rgba(255, 255, 255, 0.88)",
+                "background": "#FFFFFF",
                 "surface": "#FFFFFF",
                 "text": "#0B1120",
                 "muted": "#475569",
