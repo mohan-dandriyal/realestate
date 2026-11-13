@@ -210,7 +210,7 @@
                 "accent": "#EA580C",
                 "secondaryAccent": "#1E3A8A",
                 "border": "rgba(30, 58, 138, 0.09)",
-                "scrolledBackground": "rgba(255, 255, 255, 0.97)"
+                "scrolledBackground": "#FFFFFF"
               },
               "settings": {
                 "sticky": true,
